@@ -31,9 +31,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.3.14
   firebase_core: ^1.14.1
+  firebase_messaging: ^11.2.15
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^9.4.1
   fluttertoast: ^8.0.9
+  http: ^0.13.4
+  overlay_support: ^1.2.1
 
 dev_dependencies:
   flutter_lints: ^1.0.0
