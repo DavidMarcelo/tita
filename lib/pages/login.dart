@@ -1,8 +1,12 @@
+import 'package:app1/models/google.dart';
 import 'package:app1/pages/home.dart';
 import 'package:app1/pages/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:auth_buttons/auth_buttons.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -91,6 +95,60 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+    final googleBtn = GoogleAuthButton(
+      text: "Iniciar sesión con Google",
+      darkMode: false,
+      onPressed: () async {
+        print("Iniciando sesion");
+        User? user = await GoogleAutenticacion.iniciarSesion(context: context);
+        if (user == null) {
+          Fluttertoast.showToast(msg: "No se pudo inicar sesión");
+        } else {
+          Fluttertoast.showToast(msg: "Login Successful");
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        }
+      },
+      /*style: AuthButtonStyle(
+        iconType: AuthIconType.outlined,
+      ),*/
+    );
+    /*final facebookButton = ElevatedButton(
+      child: Text("Iniciar sesión con Facebook"),
+      onPressed: () async {
+        final resultado =
+            await FacebookAuth.i.login(permissions: ["Perfil", "email"]);
+        if (resultado.status == LoginStatus.success) {
+          final requesData = await FacebookAuth.i.getUserData(
+            fields: "email, name",
+          );
+          setState(() {});
+        }
+      },
+    );*/
+    final googleButton = MaterialButton(
+      onPressed: () async {
+        print("Iniciando sesion");
+        User? user = await GoogleAutenticacion.iniciarSesion(context: context);
+        if (user == null) {
+          Fluttertoast.showToast(msg: "No se pudo inicar sesión");
+        } else {
+          Fluttertoast.showToast(msg: "Login Successful");
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        }
+        //print(user?.);
+      },
+      color: Colors.blue,
+      child: Icon(FontAwesomeIcons.google),
+      textColor: Colors.white,
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -107,6 +165,15 @@ class _LoginState extends State<Login> {
                   children: [
                     SizedBox(
                       height: 100,
+                    ),
+                    //facebookButton,
+                    googleBtn,
+                    SizedBox(
+                      height: 20,
+                    ),
+                    googleButton,
+                    SizedBox(
+                      height: 20,
                     ),
                     emailField,
                     SizedBox(
