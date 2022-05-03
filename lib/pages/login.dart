@@ -2,6 +2,7 @@ import 'package:app1/models/google.dart';
 import 'package:app1/pages/home.dart';
 import 'package:app1/pages/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +22,16 @@ class _LoginState extends State<Login> {
   final TextEditingController passwController = new TextEditingController();
 
   final auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    /*FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification android = message.notification.android;
+    });*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +247,11 @@ class _LoginState extends State<Login> {
             },
           )
           .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
+        if (e!.code == 'wrong-password') {
+          Fluttertoast.showToast(msg: "Contraseña incorrecta.");
+        } else if (e!.code == 'user-not-found') {
+          Fluttertoast.showToast(msg: "Correo electronico no registrado!");
+        }
       });
     }
   }
